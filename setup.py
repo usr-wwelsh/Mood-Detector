@@ -3,11 +3,11 @@ from setuptools import setup, find_packages
 setup(
     name="mood-detector",
     version="0.1.0",
-    author="wedsmoker",
+    author="usr-wwelsh",
     description="Open-source music mood analysis",
     long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/wedsmoker/mood-detector",
+    url="https://github.com/usr-wwelsh/mood-detector",
     packages=find_packages(),
     install_requires=[
         "librosa>=0.11.0",  # 0.11.0+ required for scipy 1.15+ compatibility

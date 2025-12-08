@@ -11,12 +11,12 @@ pip install mood-detector
 
 ### Option 2: Docker (Recommended for non-Python developers)
 ```bash
-docker run -p 8000:8000 wedsmoker/mood-detector
+docker run -p 8000:8000 usr-wwelsh/mood-detector
 ```
 
 ### Option 3: Local Development
 ```bash
-git clone https://github.com/wedsmoker/mood-detector
+git clone https://github.com/usr-wwelsh/mood-detector
 cd mood-detector
 pip install -e .
 ```
@@ -58,7 +58,7 @@ mood analyze song.mp3
    ```
 
 ### If using Docker API:
-1. Start the server: `docker run -p 8000:8000 wedsmoker/mood-detector`
+1. Start the server: `docker run -p 8000:8000 usr-wwelsh/mood-detector`
 2. In another terminal, run: `curl -X POST http://localhost:8000/analyze -F "file=@song.mp3"`
 
 ### If using CLI:

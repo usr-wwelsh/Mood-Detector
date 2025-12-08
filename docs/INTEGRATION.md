@@ -46,7 +46,7 @@ print(f"Similar moods: {result.similarity_scores}")
 ### With Docker
 1. Start the API server:
 ```bash
-docker run -p 8000:8000 wedsmoker/mood-detector
+docker run -p 8000:8000 usr-wwelsh/mood-detector
 ```
 
 2. Make API requests to `http://localhost:8000`

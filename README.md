@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Powered by librosa](https://img.shields.io/badge/powered%20by-librosa-orange.svg)](https://librosa.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/wedsmoker/Mood-Detector/blob/main/CONTRIBUTING.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/usr-wwelsh/Mood-Detector/blob/main/CONTRIBUTING.md)
 
 **Open-source music mood analysis API.** The free alternative to proprietary music intelligence APIs.
 
@@ -43,7 +43,7 @@ pip install -e .
 python api/main.py
 
 # Or with Docker
-docker run -p 8000:8000 wedsmoker/mood-detector
+docker run -p 8000:8000 usr-wwelsh/mood-detector
 ```
 
 **Test it:**
@@ -190,7 +190,7 @@ Plus tempo (BPM), energy level (0-1), musical key, and brightness characteristic
 ### For Development:
 
 ```bash
-git clone https://github.com/wedsmoker/mood-detector
+git clone https://github.com/usr-wwelsh/mood-detector
 cd mood-detector
 
 # Create virtual environment
