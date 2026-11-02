@@ -38,7 +38,7 @@ type probeInfo struct {
 
 func probe(ctx context.Context, path string) (probeInfo, error) {
 	invalid := fmt.Errorf("invalid or unsupported audio file: %s", path)
-	out, err := exec.CommandContext(ctx, "ffprobe", "-v", "error", "-select_streams", "a:0",
+	out, err := exec.CommandContext(ctx, "ffprobe", "-v", "error", "-select_streams", "a:0", // #nosec G204 -- argv exec, no shell; path follows -i
 		"-show_entries", "format=duration:stream=channels", "-of", "default=nw=1", "-i", path).Output()
 	if err != nil {
 		return probeInfo{}, invalid
@@ -75,7 +75,7 @@ func downmixFilter(channels int) string {
 
 func decode(ctx context.Context, path string, offset, duration float64, channels int) ([]float32, error) {
 	var stderr bytes.Buffer
-	cmd := exec.CommandContext(ctx, "ffmpeg", "-v", "error", "-nostdin",
+	cmd := exec.CommandContext(ctx, "ffmpeg", "-v", "error", "-nostdin", // #nosec G204 -- argv exec, no shell; path follows -i
 		"-ss", strconv.FormatFloat(offset, 'f', 3, 64),
 		"-t", strconv.FormatFloat(duration, 'f', 3, 64),
 		"-i", path, "-vn", "-af", downmixFilter(channels), "-ar", strconv.Itoa(SampleRate), "-ac", "1", "-f", "f32le", "pipe:1")

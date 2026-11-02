@@ -40,11 +40,13 @@ func melFilterBank() []melBand {
 	}
 	bank := make([]melBand, nMels)
 	for m := range bank {
+		w := pts[m : m+3 : m+3]
+		left, mid, right := w[0], w[1], w[2]
 		row := make([]float64, nBins)
-		enorm := 2.0 / (pts[m+2] - pts[m])
+		enorm := 2.0 / (right - left)
 		for k, f := range freqs {
-			lower := (f - pts[m]) / (pts[m+1] - pts[m])
-			upper := (pts[m+2] - f) / (pts[m+2] - pts[m+1])
+			lower := (f - left) / (mid - left)
+			upper := (right - f) / (right - mid)
 			row[k] = math.Max(0, math.Min(lower, upper)) * enorm
 		}
 		lo, hi := 0, nBins
