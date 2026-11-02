@@ -59,3 +59,7 @@ uploads/
 *.pkl
 *.h5
 *.pth
+
+# uv
+.venv/
+uv.lock

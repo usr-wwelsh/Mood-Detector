@@ -1,0 +1,74 @@
+name: go
+
+on:
+  push:
+    branches: [go]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+      - run: go vet ./...
+      - run: go test ./...
+      - run: go run github.com/securego/gosec/v2/cmd/gosec@v2.21.4 ./...
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: build
+        run: |
+          for t in linux/amd64 linux/arm64 darwin/arm64 windows/amd64; do
+            os=${t%/*}; arch=${t#*/}; ext=; [ "$os" = windows ] && ext=.exe
+            CGO_ENABLED=0 GOOS=$os GOARCH=$arch go build -trimpath -ldflags="-s -w" -o "dist/mood-$os-$arch$ext" ./cmd/mood
+          done
+          (cd dist && sha256sum * > SHA256SUMS)
+      - uses: anchore/sbom-action@v0
+        with:
+          path: .
+          format: spdx-json
+          output-file: dist/sbom.spdx.json
+      - uses: anchore/scan-action@v4
+        with:
+          path: .
+          fail-build: true
+          severity-cutoff: high
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mood-binaries
+          path: dist/
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: mood-binaries
+          path: dist
+      - name: changelog
+        run: .github/changelog.sh "${GITHUB_REF_NAME}" > CHANGELOG.md
+      - uses: softprops/action-gh-release@v2
+        with:
+          body_path: CHANGELOG.md
+          files: dist/*
