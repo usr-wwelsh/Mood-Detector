@@ -14,8 +14,10 @@ order=(feat fix perf refactor test docs ci build chore other)
 log="$(git log --no-merges --pretty='%h%x09%s' "$range")"
 
 echo "## ${tag}"
-[ -n "$prev" ] && echo "Changes since ${prev}."
 echo
+echo "> **Go rewrite.** This build is the \`mood\` CLI only (\`mood analyze --json\`). The Python REST API, GUI and library are not included; they live on \`main\`."
+echo
+[ -n "$prev" ] && { echo "Changes since ${prev}."; echo; }
 
 for type in "${order[@]}"; do
   lines=""

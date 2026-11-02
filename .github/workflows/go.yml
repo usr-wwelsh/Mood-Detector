@@ -42,7 +42,7 @@ jobs:
           path: .
           format: spdx-json
           output-file: dist/sbom.spdx.json
-      - uses: anchore/scan-action@v4
+      - uses: anchore/scan-action@v7
         with:
           path: .
           fail-build: true
