@@ -1,8 +1,0 @@
-This is a placeholder for demo.mp3
-To download a demo file for testing, you can use:
-- A free audio file from https://freesound.org/
-- Or use your own audio file
-- Place it in this directory as demo.mp3
-
-Then you can run:
-mood analyze examples/demo.mp3
