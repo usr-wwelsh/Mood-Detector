@@ -95,25 +95,33 @@ func decode(ctx context.Context, path string, offset, duration float64, channels
 }
 
 func AnalyzeFile(path string) (Result, error) {
+	f, err := ExtractFile(path)
+	if err != nil {
+		return Result{}, err
+	}
+	return Classify(f), nil
+}
+
+func ExtractFile(path string) (Features, error) {
 	if _, err := os.Stat(path); err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			return Result{}, fmt.Errorf("audio file not found: %s", path)
+			return Features{}, fmt.Errorf("audio file not found: %s", path)
 		}
-		return Result{}, err
+		return Features{}, err
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), execTimeout)
 	defer cancel()
 	info, err := probe(ctx, path)
 	if err != nil {
-		return Result{}, err
+		return Features{}, err
 	}
 	total := info.duration
 	offset, duration := analysisWindow(total)
 	y, err := decode(ctx, path, offset, duration, info.channels)
 	if err != nil {
-		return Result{}, err
+		return Features{}, err
 	}
 	f := ExtractFeatures(y)
 	f.Duration = total
-	return Classify(f), nil
+	return f, nil
 }
