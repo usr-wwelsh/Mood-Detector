@@ -63,3 +63,6 @@ uploads/
 # uv
 .venv/
 uv.lock
+
+# Benchmark track names (local only)
+bench/names.local.json

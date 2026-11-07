@@ -39,6 +39,21 @@ The DSP follows librosa 0.11 and is tested against it on synthetic signals; the 
 
 **High energy:** Hard/Aggressive
 
+## Benchmark
+
+Tune detection against ~50 tracks without committing audio. Only extracted features (a dozen numbers per track, keyed by file hash) and your labels go in git.
+
+```bash
+mood bench extract ~/Music/bench-set
+$EDITOR bench/labels.json
+mood bench run
+mood bench run --min-mood 70 --min-tempo 80
+```
+
+`labels.json` entries: `{"mood": ["Techno/Dark", "Techno/Industrial"], "tempo": 128, "key": "A minor"}`. Any field can be omitted. `mood` accepts several answers. Track filenames land in `bench/names.local.json` (gitignored) so you can map ids back to files.
+
+`run` scores mood, tempo (±4%, plus an octave-tolerant score), and key (exact plus relative major/minor), then lists every miss. Classifier edits re-score instantly from the cached features. DSP edits need `bench extract` again, so bump `FeatureVersion`.
+
 ## Known issues
 
 - Tracks above 0.8 energy at 80–145 BPM get their tempo doubled.

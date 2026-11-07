@@ -12,7 +12,7 @@ import (
 	"github.com/usr-wwelsh/mood-detector/internal/mood"
 )
 
-const usage = "usage: mood analyze [--json] [--detailed] [--similarity] <file>\n       mood batch [--detailed] [--similarity] <file>...\n"
+const usage = "usage: mood analyze [--json] [--detailed] [--similarity] <file>\n       mood batch [--detailed] [--similarity] <file>...\n       mood bench extract|run (see mood bench)\n"
 
 func main() {
 	os.Exit(run(os.Args[1:], os.Stdout, os.Stderr))
@@ -28,6 +28,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		return analyze(args[1:], stdout, stderr)
 	case "batch":
 		return batch(args[1:], stdout, stderr)
+	case "bench":
+		return bench(args[1:], stdout, stderr)
 	default:
 		fmt.Fprint(stderr, usage)
 		return 2
