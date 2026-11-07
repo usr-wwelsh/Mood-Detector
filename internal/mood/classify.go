@@ -7,14 +7,14 @@ import (
 )
 
 type Features struct {
-	Tempo            float64
-	TempoConfidence  float64
-	Energy           float64
-	SpectralCentroid float64
-	SpectralRolloff  float64
-	ZeroCrossingRate float64
-	Chroma           []float64
-	Duration         float64
+	Tempo            float64   `json:"tempo"`
+	TempoConfidence  float64   `json:"tempo_confidence"`
+	Energy           float64   `json:"energy"`
+	SpectralCentroid float64   `json:"spectral_centroid"`
+	SpectralRolloff  float64   `json:"spectral_rolloff"`
+	ZeroCrossingRate float64   `json:"zero_crossing_rate"`
+	Chroma           []float64 `json:"chroma"`
+	Duration         float64   `json:"duration"`
 }
 
 type Result struct {
