@@ -20,7 +20,7 @@ type goldenFile struct {
 	} `json:"cases"`
 }
 
-func TestClassifyMatchesPythonReference(t *testing.T) {
+func TestClassifyMatchesGolden(t *testing.T) {
 	raw, err := os.ReadFile("testdata/classify_golden.json")
 	if err != nil {
 		t.Fatal(err)
@@ -63,5 +63,12 @@ func TestResultJSONKeysMatchPythonWorkerOutput(t *testing.T) {
 		if _, ok := m[k]; !ok {
 			t.Errorf("missing key %q", k)
 		}
+	}
+}
+
+func TestClassifyReportsEstimatedTempoUnchanged(t *testing.T) {
+	f := Features{Energy: 0.9, Tempo: 128, TempoConfidence: 0.5, SpectralCentroid: 2000, Chroma: make([]float64, 12)}
+	if got := Classify(f).Tempo; got != 128 {
+		t.Errorf("got %v want 128", got)
 	}
 }

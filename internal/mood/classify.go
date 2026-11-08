@@ -48,10 +48,6 @@ func detectMood(f Features) (string, float64) {
 	brightness := math.Min(f.SpectralCentroid/5000.0, 1.0)
 	major := isMajor(f.Chroma)
 
-	if tempo >= 80 && tempo <= 145 && energy > 0.8 {
-		tempo *= 2
-	}
-
 	if f.TempoConfidence < 0.2 {
 		switch {
 		case energy < 0.15:
