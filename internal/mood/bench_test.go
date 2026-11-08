@@ -169,3 +169,14 @@ func TestTrackIDIsStableContentHash(t *testing.T) {
 		t.Fatalf("%q %q", ia, ib)
 	}
 }
+
+func TestStyleScoresClassifierLabelIndependentlyOfMood(t *testing.T) {
+	r := evalOne(techno, Label{Style: []string{"Techno/Dark"}, Mood: []string{"Ambient/Drone"}})
+	if r.Style.Right != 1 || r.Style.Total != 1 || r.Mood.Right != 0 || r.Mood.Total != 1 {
+		t.Fatalf("style %+v mood %+v", r.Style, r.Mood)
+	}
+	r = evalOne(techno, Label{Style: []string{"Drum & Bass"}})
+	if r.Style.Right != 0 || len(r.Misses) != 1 || r.Misses[0].Field != "style" {
+		t.Fatalf("%+v", r)
+	}
+}

@@ -23,6 +23,7 @@ const (
 
 type Label struct {
 	Mood  []string `json:"mood,omitempty"`
+	Style []string `json:"style,omitempty"`
 	Tempo float64  `json:"tempo,omitempty"`
 	Key   string   `json:"key,omitempty"`
 }
@@ -39,9 +40,9 @@ func (s Score) pct() float64 {
 type Miss struct{ ID, Field, Got, Want string }
 
 type Report struct {
-	Mood, Tempo, TempoOctave, Key, KeyRelaxed Score
-	Misses                                    []Miss
-	Unlabeled, MissingFeatures                int
+	Mood, Style, Tempo, TempoOctave, Key, KeyRelaxed Score
+	Misses                                           []Miss
+	Unlabeled, MissingFeatures                       int
 }
 
 func Evaluate(feats map[string]Features, labels map[string]Label) Report {
@@ -70,6 +71,14 @@ func Evaluate(feats map[string]Features, labels map[string]Label) Report {
 				r.Mood.Right++
 			} else {
 				r.Misses = append(r.Misses, Miss{id, "mood", got.Mood, strings.Join(l.Mood, " | ")})
+			}
+		}
+		if len(l.Style) > 0 {
+			r.Style.Total++
+			if slices.Contains(l.Style, got.Mood) {
+				r.Style.Right++
+			} else {
+				r.Misses = append(r.Misses, Miss{id, "style", got.Mood, strings.Join(l.Style, " | ")})
 			}
 		}
 		if l.Tempo > 0 {
@@ -128,6 +137,7 @@ func (r Report) Write(w io.Writer) {
 		}
 	}
 	row("mood", r.Mood)
+	row("style", r.Style)
 	row("tempo", r.Tempo)
 	row("tempo (octave)", r.TempoOctave)
 	row("key", r.Key)
