@@ -108,7 +108,7 @@ func getBody(c *http.Client, url string) (io.ReadCloser, error) {
 		return nil, err
 	}
 	if resp.StatusCode != http.StatusOK {
-		resp.Body.Close()
+		_ = resp.Body.Close()
 		return nil, fmt.Errorf("%s: %s", url, resp.Status)
 	}
 	return resp.Body, nil
