@@ -64,9 +64,5 @@ uploads/
 .venv/
 uv.lock
 
-# Benchmark track names (local only)
-bench/names.local.json
-
-# Downloaded benchmark audio
-bench/audio/
-bench/features.json
+# Benchmark data (local only)
+bench/
