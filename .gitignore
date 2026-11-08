@@ -69,3 +69,4 @@ bench/names.local.json
 
 # Downloaded benchmark audio
 bench/audio/
+bench/features.json
