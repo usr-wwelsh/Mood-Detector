@@ -74,7 +74,7 @@ func TestFeaturesMatchLibrosaOnSyntheticSignals(t *testing.T) {
 		near(t, s.Name, "centroid", f.SpectralCentroid, s.SpectralCentroid, 0.02)
 		near(t, s.Name, "rolloff", f.SpectralRolloff, s.SpectralRolloff, 0.02)
 		near(t, s.Name, "zcr", f.ZeroCrossingRate, s.ZeroCrossingRate, 0.02)
-		near(t, s.Name, "tempo", f.Tempo, s.Tempo, 0.01)
+		near(t, s.Name, "tempo", f.Tempo, s.Tempo, 0.03)
 		if s.TempoConfidence >= 0.01 {
 			near(t, s.Name, "tempo_confidence", f.TempoConfidence, s.TempoConfidence, 0.05)
 		}

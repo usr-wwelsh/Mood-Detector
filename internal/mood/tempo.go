@@ -5,9 +5,15 @@ import "math"
 const (
 	nMels       = 128
 	tempoWindow = 384
-	startBPM    = 120.0
-	maxBPM      = 320.0
-	acSize      = 1024
+	startBPM    = 140.0
+	minBPM      = 55.0
+	maxBPM      = 220.0
+	tempoSigma  = 1.2
+
+	lagSearchMin  = 10.0
+	lagSearchMax  = 150.0
+	lagSearchStep = 0.1
+	acSize        = 1024
 )
 
 func slaneyHzToMel(f float64) float64 {
@@ -114,10 +120,14 @@ func variance(x []float64) float64 {
 }
 
 func estimateTempo(env []float64) float64 {
-	n := len(env)
-	if n == 0 {
+	if len(env) == 0 {
 		return startBPM
 	}
+	return pickTempo(meanAutocorr(env), len(env))
+}
+
+func meanAutocorr(env []float64) []float64 {
+	n := len(env)
 	const half = tempoWindow / 2
 	padded := make([]float64, n+tempoWindow)
 	copy(padded[half:], env)
@@ -157,14 +167,34 @@ func estimateTempo(env []float64) float64 {
 			mean[lag] += ac[lag] / peak
 		}
 	}
-	best, bestScore := 0, math.Inf(-1)
-	for lag := 1; lag < tempoWindow; lag++ {
-		bpm := 60.0 * SampleRate / (hopLength * float64(lag))
-		if bpm >= maxBPM {
+	return mean
+}
+
+var lagMultiples = []float64{1, 2, 3, 4, 0.5, 1.5}
+
+func lagValue(ac []float64, x float64) float64 {
+	if x < 1 || x >= float64(len(ac)-1) {
+		return 0
+	}
+	i := int(x)
+	f := x - float64(i)
+	return ac[i]*(1-f) + ac[i+1]*f
+}
+
+func pickTempo(mean []float64, n int) float64 {
+	best, bestScore := 0.0, math.Inf(-1)
+	for lag := lagSearchMin; lag < lagSearchMax; lag += lagSearchStep {
+		bpm := 60.0 * SampleRate / (hopLength * lag)
+		if bpm < minBPM || bpm > maxBPM {
 			continue
 		}
-		d := math.Log2(bpm) - math.Log2(startBPM)
-		score := math.Log1p(1e6*mean[lag]/float64(n)) - 0.5*d*d
+		var v float64
+		for _, m := range lagMultiples {
+			v += lagValue(mean, lag*m)
+		}
+		v /= float64(len(lagMultiples))
+		d := (math.Log2(bpm) - math.Log2(startBPM)) / tempoSigma
+		score := math.Log1p(1e6*v/float64(n)) - 0.5*d*d
 		if score > bestScore {
 			best, bestScore = lag, score
 		}
@@ -172,5 +202,5 @@ func estimateTempo(env []float64) float64 {
 	if best == 0 {
 		return startBPM
 	}
-	return 60.0 * SampleRate / (hopLength * float64(best))
+	return 60.0 * SampleRate / (hopLength * best)
 }
