@@ -43,6 +43,21 @@ The DSP follows librosa 0.11 and is tested against it on synthetic signals; the 
 
 Tune detection against ~50 tracks without committing audio. Only extracted features (a dozen numbers per track, keyed by file hash) and your labels go in git.
 
+Or fetch small labeled slices of public datasets. Audio is downloaded straight from the dataset hosts into the gitignored `bench/audio/` and never committed:
+
+```bash
+mood bench fetch
+mood bench extract bench/audio
+mood bench run
+```
+
+- **GiantSteps tempo** (`--set giantsteps`, default 60 tracks): EDM previews with crowdsourced tempo and Beatport genre. Each file is verified against the dataset's md5. The slice always includes the `--outliers` slowest and fastest tracks (default 4 each), then spreads the rest across the tempo range. Genre maps to the classifier's style labels where one exists; tempo is scored for every track.
+- **MTG-Jamendo** (`--set jamendo`, default 10 per mood): Creative Commons tracks tagged sad, calm, energetic, dark, happy or party. Only tracks with exactly one of those tags are used, and mood labels are seeded in `labels.json`.
+
+Slices are deterministic, so scores are comparable across machines. Re-running skips files already downloaded.
+
+Or bring your own tracks:
+
 ```bash
 mood bench extract ~/Music/bench-set
 $EDITOR bench/labels.json
@@ -52,7 +67,7 @@ mood bench run --min-mood 70 --min-tempo 80
 
 `labels.json` entries: `{"mood": ["Techno/Dark", "Techno/Industrial"], "tempo": 128, "key": "A minor"}`. Any field can be omitted. `mood` accepts several answers. Track filenames land in `bench/names.local.json` (gitignored) so you can map ids back to files.
 
-`run` scores mood, tempo (±4%, plus an octave-tolerant score), and key (exact plus relative major/minor), then lists every miss. Classifier edits re-score instantly from the cached features. DSP edits need `bench extract` again, so bump `FeatureVersion`.
+`run` scores mood, style (classifier label vs. genre), tempo (±4%, plus an octave-tolerant score), and key (exact plus relative major/minor), then lists every miss. Classifier edits re-score instantly from the cached features. DSP edits need `bench extract` again, so bump `FeatureVersion`.
 
 ## Known issues
 

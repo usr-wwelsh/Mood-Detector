@@ -66,3 +66,6 @@ uv.lock
 
 # Benchmark track names (local only)
 bench/names.local.json
+
+# Downloaded benchmark audio
+bench/audio/
