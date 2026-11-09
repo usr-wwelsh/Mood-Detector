@@ -72,3 +72,17 @@ func TestClassifyReportsEstimatedTempoUnchanged(t *testing.T) {
 		t.Errorf("got %v want 128", got)
 	}
 }
+
+func TestClassifyCallsHighEnergyAt140BpmDrivingElectronicNotTechno(t *testing.T) {
+	f := Features{Energy: 0.63, Tempo: 140, TempoConfidence: 0.9, SpectralCentroid: 3000, Chroma: make([]float64, 12)}
+	if got := Classify(f).Mood; got != "Driving Electronic" {
+		t.Errorf("got %q", got)
+	}
+}
+
+func TestClassifyKeepsTechnoAt128Bpm(t *testing.T) {
+	f := Features{Energy: 0.63, Tempo: 128, TempoConfidence: 0.9, SpectralCentroid: 3000, Chroma: make([]float64, 12)}
+	if got := Classify(f).Mood; got != "Techno/Industrial" {
+		t.Errorf("got %q", got)
+	}
+}

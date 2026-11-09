@@ -27,7 +27,7 @@ Analyzes 30 s from the middle of the track (skips intros), then:
 1. **Features:** tempo (onset-strength autocorrelation, half-tempo correction), RMS energy, spectral centroid and rolloff, zero-crossing rate, chroma for key.
 2. **Rules:** tempo + energy + brightness + timbre + major/minor, with tempo confidence to catch drones and ambient. No ML.
 
-The DSP follows librosa 0.11 and is tested against it on synthetic signals; the classifier is tested against golden output from the original Python implementation (see `main`).
+The DSP follows librosa 0.11 and is tested against it on synthetic signals; the classifier started as a port of the Python implementation (see `main`) and has since diverged where the bench showed it was wrong.
 
 ## Moods
 

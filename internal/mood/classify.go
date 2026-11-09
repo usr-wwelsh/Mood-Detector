@@ -71,7 +71,7 @@ func detectMood(f Features) (string, float64) {
 		return "Glitch/Experimental", tempo
 	}
 
-	if tempo >= 120 && tempo <= 145 && energy >= 0.50 {
+	if tempo >= 120 && tempo <= 135 && energy >= 0.50 {
 		if brightness < 0.4 {
 			return "Techno/Dark", tempo
 		}
@@ -100,6 +100,10 @@ func detectMood(f Features) (string, float64) {
 		default:
 			return "Club/Groovy", tempo
 		}
+	}
+
+	if tempo > 135 && tempo < 148 && energy >= 0.25 {
+		return "Driving Electronic", tempo
 	}
 
 	if tempo >= 148 && tempo <= 180 {
