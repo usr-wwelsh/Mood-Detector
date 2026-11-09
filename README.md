@@ -71,7 +71,7 @@ mood bench run --min-mood 70 --min-tempo 80
 
 ## Known issues
 
-- Half-time tracks (dubstep, hip-hop feel) often read at double tempo. The octave-tolerant bench score is 97%.
+- Half-time tracks (dubstep, hip-hop feel) often read at double tempo.
 - Key detection works best with clear harmonic content.
 - ffmpeg's resampler differs slightly from librosa's, so labels near thresholds can differ from the Python version.
 
