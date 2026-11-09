@@ -1,6 +1,7 @@
 package mood
 
 import (
+	"slices"
 	"strings"
 	"testing"
 )
@@ -73,5 +74,21 @@ func TestJamendoLabelMapsToClassifierMoods(t *testing.T) {
 	}
 	if JamendoLabel("nonsense") != nil {
 		t.Fatal("unmapped tag returned labels")
+	}
+}
+
+func TestJamendoLabelAcceptsListenedAnswers(t *testing.T) {
+	cases := map[string]string{
+		"dark":  "Ambient/Atmospheric",
+		"sad":   "Minimal/Sparse",
+		"happy": "Club/Groovy",
+	}
+	for tag, want := range cases {
+		if !slices.Contains(JamendoLabel(tag), want) {
+			t.Errorf("%s missing %s: %v", tag, want, JamendoLabel(tag))
+		}
+	}
+	if !slices.Contains(JamendoLabel("dark"), "Melancholic/Sad") {
+		t.Errorf("dark missing Melancholic/Sad")
 	}
 }

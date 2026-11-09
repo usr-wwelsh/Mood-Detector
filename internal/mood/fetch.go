@@ -21,11 +21,11 @@ const (
 var jamendoPath = regexp.MustCompile(`^[0-9]{1,3}/[0-9]{1,9}\.mp3$`)
 
 var jamendoMoods = map[string][]string{
-	"sad":       {"Melancholic/Sad", "Downtempo/Dark"},
+	"sad":       {"Melancholic/Sad", "Downtempo/Dark", "Minimal/Sparse"},
 	"calm":      {"Ambient/Chill", "Ambient/Atmospheric", "Downtempo/Relaxed", "Relaxed/Moderate"},
 	"energetic": {"Energetic/Rave", "Driving Electronic", "Upbeat/Moderate", "Hard/Aggressive"},
-	"dark":      {"Techno/Dark", "Dark House", "Downtempo/Dark", "Atmospheric/Textural"},
-	"happy":     {"Upbeat/Moderate", "House/Dance", "Disco/Funk"},
+	"dark":      {"Techno/Dark", "Dark House", "Downtempo/Dark", "Atmospheric/Textural", "Ambient/Atmospheric", "Melancholic/Sad"},
+	"happy":     {"Upbeat/Moderate", "House/Dance", "Disco/Funk", "Club/Groovy"},
 	"party":     {"House/Dance", "Disco/Funk", "Club/Groovy", "Energetic/Rave"},
 }
 
