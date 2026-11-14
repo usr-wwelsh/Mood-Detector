@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-var techno = Features{Tempo: 128, TempoConfidence: 0.5, Energy: 0.6, SpectralCentroid: 1000, Chroma: cMajorChroma()}
+var techno = Features{Tempo: 128, TempoConfidence: 0.5, Energy: 0.8, SpectralCentroid: 1000, Chroma: cMajorChroma()}
 
 func cMajorChroma() []float64 {
 	c := make([]float64, 12)

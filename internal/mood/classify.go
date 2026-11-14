@@ -71,11 +71,26 @@ func detectMood(f Features) (string, float64) {
 		return "Glitch/Experimental", tempo
 	}
 
-	if tempo >= 120 && tempo <= 135 && energy >= 0.50 {
+	if tempo >= 120 && tempo <= 135 && energy >= 0.70 {
 		if brightness < 0.4 {
 			return "Techno/Dark", tempo
 		}
 		return "Techno/Industrial", tempo
+	}
+
+	if tempo >= 120 && tempo <= 135 && energy >= 0.50 {
+		switch {
+		case brightness > 0.5 && major:
+			return "House/Dance", tempo
+		case brightness > 0.5:
+			return "Dark House", tempo
+		default:
+			return "Club/Groovy", tempo
+		}
+	}
+
+	if tempo >= 120 && tempo <= 135 && energy >= 0.20 && energy < 0.50 && brightness < 0.25 {
+		return "Techno/Minimal", tempo
 	}
 
 	if tempo >= 100 && tempo <= 130 && energy >= 0.15 {

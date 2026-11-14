@@ -81,8 +81,29 @@ func TestClassifyCallsHighEnergyAt140BpmDrivingElectronicNotTechno(t *testing.T)
 }
 
 func TestClassifyKeepsTechnoAt128Bpm(t *testing.T) {
-	f := Features{Energy: 0.63, Tempo: 128, TempoConfidence: 0.9, SpectralCentroid: 3000, Chroma: make([]float64, 12)}
+	f := Features{Energy: 0.8, Tempo: 128, TempoConfidence: 0.9, SpectralCentroid: 3000, Chroma: make([]float64, 12)}
 	if got := Classify(f).Mood; got != "Techno/Industrial" {
+		t.Errorf("got %q", got)
+	}
+}
+
+func TestClassifyCallsBrightMidEnergyHouseTempoHouseNotTechno(t *testing.T) {
+	f := Features{Energy: 0.644, Tempo: 123, TempoConfidence: 6.2, SpectralCentroid: 3161, ZeroCrossingRate: 0.16, Chroma: make([]float64, 12)}
+	if got := Classify(f).Mood; got != "Dark House" {
+		t.Errorf("got %q", got)
+	}
+}
+
+func TestClassifyCallsMidBrightnessMidEnergyHouseTempoClubNotTechno(t *testing.T) {
+	f := Features{Energy: 0.548, Tempo: 124, TempoConfidence: 16.5, SpectralCentroid: 2304, ZeroCrossingRate: 0.055, Chroma: make([]float64, 12)}
+	if got := Classify(f).Mood; got != "Club/Groovy" {
+		t.Errorf("got %q", got)
+	}
+}
+
+func TestClassifyCallsDarkSparseFourOnFloorTechnoMinimal(t *testing.T) {
+	f := Features{Energy: 0.28, Tempo: 129, TempoConfidence: 35, SpectralCentroid: 840, ZeroCrossingRate: 0.015, Chroma: make([]float64, 12)}
+	if got := Classify(f).Mood; got != "Techno/Minimal" {
 		t.Errorf("got %q", got)
 	}
 }

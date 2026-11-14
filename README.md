@@ -31,7 +31,7 @@ The DSP follows librosa 0.11 and is tested against it on synthetic signals; the 
 
 ## Moods
 
-**Dance/Electronic:** House/Dance, Dark House, Disco/Funk, Club/Groovy, Techno/Dark, Techno/Industrial, Drum & Bass, Breakbeat/Fast, Energetic/Rave, Driving Electronic
+**Dance/Electronic:** House/Dance, Dark House, Disco/Funk, Club/Groovy, Techno/Dark, Techno/Industrial, Techno/Minimal, Drum & Bass, Breakbeat/Fast, Energetic/Rave, Driving Electronic
 
 **Chill/Ambient:** Ambient/Drone, Ambient/Atmospheric, Ambient/Chill, Atmospheric/Textural, Downtempo/Dark, Downtempo/Relaxed, Melancholic/Sad
 
