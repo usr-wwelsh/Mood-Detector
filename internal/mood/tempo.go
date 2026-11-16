@@ -10,6 +10,9 @@ const (
 	maxBPM      = 220.0
 	tempoSigma  = 1.2
 
+	halfTimeMinBPM    = 160.0
+	halfTimeMaxEnergy = 0.35
+
 	lagSearchMin  = 10.0
 	lagSearchMax  = 150.0
 	lagSearchStep = 0.1
@@ -117,6 +120,13 @@ func variance(x []float64) float64 {
 		s += (v - mean) * (v - mean)
 	}
 	return s / float64(len(x))
+}
+
+func resolveHalfTime(tempo, energy float64) float64 {
+	if tempo >= halfTimeMinBPM && energy < halfTimeMaxEnergy {
+		return tempo / 2
+	}
+	return tempo
 }
 
 func estimateTempo(env []float64) float64 {

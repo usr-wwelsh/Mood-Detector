@@ -29,3 +29,23 @@ func TestEstimateTempoResolvesBetweenLagSteps(t *testing.T) {
 		t.Errorf("got %.1f want ~137", got)
 	}
 }
+
+func TestResolveHalfTime(t *testing.T) {
+	cases := []struct {
+		name          string
+		tempo, energy float64
+		want          float64
+	}{
+		{"fast and quiet is halved", 185, 0.20, 92.5},
+		{"fast and loud stays", 185, 0.60, 185},
+		{"at threshold energy stays", 185, 0.35, 185},
+		{"just below tempo threshold stays", 159, 0.20, 159},
+		{"at tempo threshold is halved", 160, 0.20, 80},
+		{"slow and quiet stays", 90, 0.10, 90},
+	}
+	for _, c := range cases {
+		if got := resolveHalfTime(c.tempo, c.energy); got != c.want {
+			t.Errorf("%s: got %.1f want %.1f", c.name, got, c.want)
+		}
+	}
+}

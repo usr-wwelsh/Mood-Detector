@@ -19,7 +19,7 @@ func ExtractFeatures(y []float32) Features {
 	if f.TempoConfidence < 0.01 {
 		f.Tempo = 60
 	} else {
-		f.Tempo = estimateTempo(env)
+		f.Tempo = resolveHalfTime(estimateTempo(env), f.Energy)
 	}
 	return f
 }
