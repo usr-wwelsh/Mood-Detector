@@ -89,7 +89,7 @@ func detectMood(f Features) (string, float64) {
 		}
 	}
 
-	if tempo >= 120 && tempo <= 135 && energy >= 0.20 && energy < 0.50 && brightness < 0.25 {
+	if tempo >= 120 && tempo <= 135 && energy >= 0.20 && brightness < 0.25 {
 		return "Techno/Minimal", tempo
 	}
 
@@ -168,17 +168,13 @@ func detectMood(f Features) (string, float64) {
 		}
 	}
 
-	switch {
-	case energy >= 0.25:
-		if tempo > 100 {
-			return "Upbeat/Moderate", tempo
-		}
-		return "Moderate Groove", tempo
-	case energy >= 0.15:
+	if energy < 0.25 {
 		return "Relaxed/Moderate", tempo
-	default:
-		return "Low Energy", tempo
 	}
+	if tempo > 100 {
+		return "Upbeat/Moderate", tempo
+	}
+	return "Moderate Groove", tempo
 }
 
 func argmax(v []float64) int {
